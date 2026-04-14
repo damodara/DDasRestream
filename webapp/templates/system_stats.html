@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Системная статистика</title>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        .container { width: 80%; margin: auto; background: #f4f4f4; padding: 20px; border-radius: 5px; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 8px; text-align: left; border-bottom: 1px solid #ddd; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Статистика сервера</h1>
+        <table>
+            <tr><th>Метрика</th><th>Значение</th></tr>
+            <tr><td>Загрузка CPU</td><td>{{ cpu_percent }}%</td></tr>
+            <tr><td>Использование RAM</td><td>{{ memory_percent }}% ({{ "%.2f"|format(memory_used_gb) }} ГБ из {{ "%.2f"|format(memory_total_gb) }} ГБ)</td></tr>
+            <tr><td>Использование диска (/)</td><td>{{ disk_percent }}% ({{ "%.2f"|format(disk_used_gb) }} ГБ из {{ "%.2f"|format(disk_total_gb) }} ГБ)</td></tr>
+            <tr><td>Сеть (отправлено / получено)</td><td>{{ "%.2f"|format(bytes_sent_mb) }} МБ / {{ "%.2f"|format(bytes_recv_mb) }} МБ</td></tr>
+            <tr><td>Время работы системы (uptime)</td><td>{{ "%.2f"|format(uptime_seconds / 3600) }} часов</td></tr>
+        </table>
+        <p><a href="/admin">Вернуться в админ-панель</a></p>
+    </div>
+</body>
+</html>

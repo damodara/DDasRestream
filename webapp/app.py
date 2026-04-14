@@ -1,4 +1,6 @@
 import os
+import psutil
+import time
 import re
 import uuid
 import subprocess
@@ -133,6 +135,37 @@ def delete(filename):
     else:
         flash('Файл не найден')
     return redirect(url_for('index'))
+
+@app.route('/system-stats')
+def system_stats():
+    # Собираем данные с помощью psutil
+    cpu_percent = psutil.cpu_percent(interval=1)
+    memory = psutil.virtual_memory()
+    disk = psutil.disk_usage('/')
+    net_io = psutil.net_io_counters()
+    uptime = time.time() - psutil.boot_time()
+
+    # Передаём данные в шаблон
+    return render_template("system_stats.html",
+                           cpu_percent=cpu_percent,
+                           memory_percent=memory.percent,
+                           memory_used_gb=memory.used / (1024**3),
+                           memory_total_gb=memory.total / (1024**3),
+                           disk_percent=disk.percent,
+                           disk_used_gb=disk.used / (1024**3),
+                           disk_total_gb=disk.total / (1024**3),
+                           bytes_sent_mb=net_io.bytes_sent / (1024**2),
+                           bytes_recv_mb=net_io.bytes_recv / (1024**2),
+                           uptime_seconds=uptime)
+
+@app.route('/api/system-metrics')
+def api_system_metrics():
+    # Собираем метрики аналогично предыдущему примеру
+    cpu = psutil.cpu_percent(interval=1)
+    mem = psutil.virtual_memory().percent
+    disk = psutil.disk_usage('/').percent
+
+    return { "cpu": cpu, "memory": mem, "disk": disk }
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=False)
