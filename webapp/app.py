@@ -86,8 +86,8 @@ def add():
         while os.path.exists(filepath):
             filename = generate_filename()
             filepath = os.path.join(PUSH_DIR, filename)
-        with open(filepath, 'w') as f:
-            f.write(f'push {url}\n')
+        with open(filepath, 'w', newline='\n') as f:
+            f.write(f'push {url};')
         reload_nginx()
         flash('Push-адрес добавлен')
         return redirect(url_for('index'))
@@ -108,8 +108,8 @@ def edit(filename):
         if not new_url.startswith('rtmp://'):
             flash('URL должен начинаться с rtmp://')
             return redirect(url_for('edit', filename=filename))
-        with open(filepath, 'w') as f:
-            f.write(f'push {new_url}\n')
+        with open(filepath, 'w', newline='\n') as f:
+            f.write(f'push {new_url};')
         reload_nginx()
         flash('Push-адрес обновлён')
         return redirect(url_for('index'))
