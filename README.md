@@ -15,7 +15,7 @@ SECRET_KEY=my-very-secret-key-change-me
 EOL
 ```
 
-3Запустите проект:
+3. Запустите проект:
 ```bash
 docker-compose -f docker-compose.yml up --build
 ```
@@ -46,6 +46,14 @@ python -c "import secrets; print(secrets.token_hex(32))"
 **Через OpenSSL:**
 ```bash
 openssl rand -hex 32
+```
+
+Перед запуском контейнеров необходимо дать право на выполнение скрипту `watch-reload.sh`, который отслеживает изменения в папке с push-конфигами и перезагружает Nginx.
+
+В терминале, из корневой папки проекта, выполните:
+
+```bash
+chmod +x nginx/watch-reload.sh
 ```
 
 ## Доступ к приложению
