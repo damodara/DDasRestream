@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Добавить push-адрес</h2>
+<form method="post">
+    <div class="mb-3">
+        <label>RTMP URL (начинается с rtmp://)</label>
+        <input type="text" name="url" class="form-control" required placeholder="rtmp://a.rtmp.youtube.com/live2/ваш-ключ">
+    </div>
+    <button type="submit" class="btn btn-primary">Сохранить</button>
+    <a href="{{ url_for('index') }}" class="btn btn-secondary">Отмена</a>
+</form>
+{% endblock %}

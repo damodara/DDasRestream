@@ -1,0 +1,35 @@
+version: '3.8'
+
+services:
+  nginx:
+    image: alfg/nginx-rtmp   # готовый образ с RTMP модулем
+    container_name: rtmp-nginx
+    ports:
+      - "1935:1935"          # RTMP порт
+      - "8080:80"            # HTTP (опционально, для статистики)
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/watch-reload.sh:/watch-reload.sh:ro
+      - rtmp-push-data:/etc/nginx/rtmp-push
+    entrypoint: /bin/sh -c "chmod +x /watch-reload.sh && /watch-reload.sh & nginx -g 'daemon off;'"
+    restart: unless-stopped
+
+  webapp:
+    build: ./webapp
+    container_name: rtmp-webapp
+    ports:
+      - "5001:5000"
+    volumes:
+      - rtmp-push-data:/etc/nginx/rtmp-push   # монтируем ту же volume для доступа к .conf
+    env_file:
+      - .env
+    environment:
+      - ADMIN_USER=${ADMIN_USER}
+      - ADMIN_PASS=${ADMIN_PASS}
+      - SECRET_KEY=${SECRET_KEY}
+    depends_on:
+      - nginx
+    restart: unless-stopped
+
+volumes:
+  rtmp-push-data:
