@@ -7,7 +7,7 @@
 1. Убедитесь, что у вас установлены Docker и docker-compose
 2. Создайте файл `.env` в корневой директории проекта:
 ```bash
-cd /Users/damodaraguranov/Desktop/DDasRestream
+cd /DDasRestream
 cat > .env << 'EOL'
 ADMIN_USER=admin
 ADMIN_PASS=securepass123
